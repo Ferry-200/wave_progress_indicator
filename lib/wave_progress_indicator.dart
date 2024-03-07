@@ -53,7 +53,7 @@ class WaveLinearProgressIndicator extends StatelessWidget {
   Widget build(BuildContext context) {
     var colorScheme = Theme.of(context).colorScheme;
     return CustomPaint(
-      size: const Size(300.0, 0.0),
+      size: const Size(300.0, 40.0),
       painter: WaveLinearPainter(
         controller: controller,
         colorScheme: colorScheme,
@@ -73,17 +73,15 @@ class WaveLinearPainter extends CustomPainter {
     var painter = Paint()..color = colorScheme.primary; //2080E5
 
     Path path = Path();
-    path.moveTo(0, (size.height / 2) + 2.0);
+    path.moveTo(0, (size.height / 2));
     painter.strokeWidth = 4.0;
 
     ///波浪线条
     painter.style = PaintingStyle.stroke;
-    for (double i = 1; i <= size.width * controller.progress; i += 1) {
+    for (double i = 1; i <= size.width * controller.progress; i++) {
       path.lineTo(
         i,
-        2 * sin((2 * pi * i / 24.0) + controller.phase) +
-            (size.height / 2) +
-            2.0,
+        2 * sin((2 * pi * i / 24.0) + controller.phase) + (size.height / 2),
       );
     }
     canvas.drawPath(path, painter);
@@ -91,21 +89,13 @@ class WaveLinearPainter extends CustomPainter {
     ///未完成进度条
     painter.style = PaintingStyle.fill;
     painter.color = colorScheme.secondary;
-    canvas.drawRect(
-      Rect.fromLTWH(
-        size.width * controller.progress,
-        (size.height / 2),
-        size.width * (1 - controller.progress),
-        4.0,
-      ),
-      painter,
-    );
     canvas.drawRRect(
       RRect.fromRectAndRadius(
-        Rect.fromCenter(
-          center: Offset(size.width, (size.height / 2) + 2.0),
-          width: 4.0,
-          height: 4.0,
+        Rect.fromLTWH(
+          size.width * controller.progress,
+          (size.height / 2 - 2),
+          size.width * (1 - controller.progress),
+          4.0,
         ),
         const Radius.circular(2.0),
       ),
@@ -115,7 +105,7 @@ class WaveLinearPainter extends CustomPainter {
     ///滑块
     painter.color = colorScheme.primary;
     canvas.drawCircle(
-      Offset(size.width * controller.progress, (size.height / 2) + 2.0),
+      Offset(size.width * controller.progress, (size.height / 2)),
       8.0,
       painter,
     );

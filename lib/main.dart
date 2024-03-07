@@ -42,7 +42,13 @@ class _MainAppState extends State<MainApp> {
         body: Center(
           child: SizedBox(
             width: 300,
-            child: WaveLinearProgressIndicator(controller: controller),
+            height: 40,
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all()
+              ),
+              child: WaveLinearProgressIndicator(controller: controller),
+            ),
           ),
         ),
       ),
